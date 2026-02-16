@@ -1,0 +1,14 @@
+# Project requirements for PEFT + Transformers notebook
+# Install an appropriate torch wheel for your CUDA version. Example (CPU-only):
+#   python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+peft
+transformers
+accelerate
+datasets
+torch
+sentencepiece
+tokenizers
+
+# Optional: add extras if desired
+# transformers[torch]
