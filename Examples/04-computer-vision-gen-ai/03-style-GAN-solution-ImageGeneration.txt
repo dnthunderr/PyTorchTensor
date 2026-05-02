@@ -1,0 +1,33 @@
+Prepare runtime + StyleGAN3 imports
+
+Adds local repo path to sys.path and imports StyleGAN3 modules.
+Disables custom CUDA extension init (so it uses slower Python/reference paths instead of compiling kernels), matching behavior in torch_utils.ops.upfirdn2d._init.
+Load pretrained checkpoint
+
+Downloads/caches stylegan3-r-afhqv2-512x512.pkl.
+Loads pickle dict and picks G_ema for generation (G = stylegan_model['G_ema']).
+Why G_ema
+
+G_ema is the exponential moving average copy of generator weights, updated during training for stabler/better samples (see training_loop.G_ema handling).
+Sample latent
+
+Draws latent z ~ N(0,1) with shape [1, G.z_dim] from generator config (see training.networks_stylegan3.Generator).
+Device selection with safety probe
+
+Defaults to CPU.
+If CUDA exists: move G and z to GPU, then do a tiny forward pass.
+On runtime error (e.g., OOM), falls back to CPU cleanly.
+Build conditioning tensor
+
+Uses c = torch.zeros([batch, G.c_dim]).
+For this unconditional model, G.c_dim == 0, so this is an empty conditioning input.
+Generate image
+
+In inference mode:
+img = G(z, c, noise_mode="const", force_fp32=GEN_FORCE_FP32)
+Output is tensor in NCHW, approximately in [-1, 1].
+Post-process for display
+
+permute(0,2,3,1) to NHWC.
+Scale to pixel range: (img * 127.5 + 128).clamp(0,255).
+Convert to uint8, move to CPU, show with matplotlib.

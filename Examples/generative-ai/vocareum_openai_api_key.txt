@@ -1,0 +1,24 @@
+OpenAI Python Package Version - 0
+
+import openai
+openai.api_base = "https://openai.vocareum.com/v1"
+openai.api_key = "voc-00000000000000000000000000000000abcd.12345678"
+
+OpenAI Python Package Version - 1
+
+from openai import OpenAI
+client = OpenAI(
+    base_url = "https://openai.vocareum.com/v1",
+    api_key = "voc-00000000000000000000000000000000abcd.12345678"
+)
+
+KEY:
+voc-5360412841266774820989699263682fd294.61066060
+
+Rest API Calls:
+https://openai.vocareum.com/v1 
+instead of https://api.openai.com/v1
+
+
+
+voc-5360412841266774820989699263682fd294.61066060
